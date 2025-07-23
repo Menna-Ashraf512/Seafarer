@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class UsersService {
   constructor(private _httpClient: HttpClient) {}
 
-  baseUrl = `http://176.9.184.190`;
+  baseUrl = `https://176.9.184.190`;
 
   getAllSeafarers(): Observable<any> {
     return this._httpClient.get(
