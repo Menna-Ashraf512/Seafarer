@@ -1,8 +1,9 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './shared/guard/Auth.guard';
+import { AuthComponent } from './core/auth/auth.component';
 
 export const routes: Routes = [
-    {path:'',redirectTo:'auth' , pathMatch:'full'},
+    { path: '', pathMatch: 'full', component: AuthComponent },
     {path:'auth',loadComponent:() =>import('./core/auth/auth.component').then(m => m.AuthComponent), title:'Login Page'},
     {path:'dashboard',loadComponent:() =>import('./core/dashboard/dashboard.component').then(m => m.DashboardComponent), title:'Home Page',canActivate:[AuthGuard] ,children:[
         {path:'',redirectTo:'seafarerList',pathMatch:'full'},
