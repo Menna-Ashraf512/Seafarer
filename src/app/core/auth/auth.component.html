@@ -1,0 +1,52 @@
+<section class="bg-[#7a6ff6] min-h-screen flex items-center justify-center px-4">
+    <form [formGroup]="loginForm"
+        class="w-full max-w-sm bg-[#E8E6FF] shadow-xl shadow-slate-800 px-6 sm:px-12 py-10 rounded-lg">
+        <div class="">
+            <h1 class="text-start text-xl font-semibold mb-9">Sign In</h1>
+            <!-- Username Field -->
+            <div class="mb-8">
+                <div class="relative">
+                    <input formControlName="username" id="username" type="text"
+                        class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-600 appearance-none focus:outline-none focus:ring-0 focus:border-[#7a6ff6] peer"
+                        placeholder=" " />
+                    <label for="username"
+                        class="absolute text-black font-mono duration-300 transform -translate-y-4 bg-[#E8E6FF] scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#7a6ff6] peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1">
+                        Username
+                    </label>
+                </div>
+                @if (loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['required']) {
+                <p class="my-2 text-center text-sm text-red-600"><span class="font-medium">Oops!</span> Username
+                    required!</p>
+                }
+            </div>
+
+            <!-- Password Field -->
+            <div class="relative">
+                <input formControlName="Password" id="Password" [type]="showPassword ? 'text' : 'password'"
+                    class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-600 appearance-none focus:outline-none focus:ring-0 focus:border-[#7a6ff6] peer"
+                    placeholder=" " />
+
+                <label for="Password"
+                    class="absolute text-black font-mono duration-300 transform -translate-y-4 bg-[#E8E6FF] scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#7a6ff6] peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 start-1">
+                    Password
+                </label>
+
+                <i [class]="{'fa-solid': true,'fa-eye': !showPassword,'fa-eye-slash': showPassword}" (click)="togglePasswordVisibility()"
+                    class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer"></i>
+            </div>
+
+            @if (loginForm.get('Password')?.touched && loginForm.get('Password')?.errors?.['required']) {
+            <p class="my-2 text-center text-sm text-red-600">
+                <span class="font-medium">Oops!</span> password required!
+            </p>
+            }
+        </div>
+        <!-- Sign In Button -->
+        <div class="text-center">
+            <button [class]="loginForm.invalid ? 'bg-slate-500' : 'bg-[#635BFF]'" [disabled]="loginForm.invalid"
+                class="btn px-10 py-2 text-white transition-all duration-200 rounded mx-auto mt-5" (click)="login()">
+                Sign In
+            </button>
+        </div>
+    </form>
+</section>

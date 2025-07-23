@@ -1,0 +1,171 @@
+<section class="py-5">
+    <div class="container">
+        <div class="relative sm:rounded-lg">
+            <div class="flex-col my-3 flex md:flex-row justify-between items-center">
+                <div class="pb-4">
+                    <label for="table-search" class="sr-only">Search</label>
+                    <div class="relative mt-1">
+                        <div
+                            class="absolute inset-y-0 rtl:inset-r-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                            </svg>
+                        </div>
+                        <input type="text" id="table-search" (input)="searchByEmpName($any($event.target).value)"
+                            class="block pt-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                            placeholder="Search for items">
+                    </div>
+                </div>
+                <div>
+                    <button type="button" routerLink="/dashboard/addNew"
+                        class="text-white bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Add
+                        New</button>
+                </div>
+            </div>
+            <div class="overflow-x-auto mb-5 shadow-lg rounded-lg">
+                <table class="w-screen text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700  uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Action
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Status
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                EmployeeName
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                EmployeeCode
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                JobName
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                EmploymentDate
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                InsuranceDate
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                SponsorName
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                PassPortIssueDate
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                VisaIssueDate
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Nationality
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                BirthDate
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Phone
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Mobile
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                NationalId
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                VisaIssueDate
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                PassportNumber
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                PassportExpireDate
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Age
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (item of filteredUsers |paginate: { itemsPerPage: 6, currentPage:currentPage }; track
+                        item.Id ) {
+                        <tr
+                            class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <td class="px-6 py-4">
+                                <a [routerLink]="['/dashboard/edit', item.Id]"
+                                    class="font-medium cursor-pointer text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                    <button (click)="toggleStatus(item.Id,item.Status,item.EmpId)"
+                                        [class]="item.Status ===1 ? 'bg-green-600 hover:bg-green-700' : 'bg-gray-400 hover:bg-gray-500'"
+                                        class="text-white px-4 py-2  rounded transition duration-200">
+                                        {{ item.Status === 1 ? 'Active' : 'Inactive' }}
+                                    </button>
+                                    
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.EmployeeName}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.EmployeeCode}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.JobName}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.EmploymentDate}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.InsuranceDate}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.SponsorName}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.PassPortIssueDate}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.VisaIssueDate}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.Nationality}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.BirthDate}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.Phone}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.Mobile}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.NationalId}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.VisaIssueDate}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.PassportNumber}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.PassportExpireDate}}
+                            </td>
+                            <td scope="col" class="px-6 py-3">
+                                {{item.Age}}
+                            </td>
+
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+        <pagination-controls class="text-center" (pageChange)="currentPage = $event"></pagination-controls>
+
+    </div>
+</section>

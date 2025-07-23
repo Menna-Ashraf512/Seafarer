@@ -1,0 +1,577 @@
+<section>
+
+    <div class="container my-20">
+        <!-- Stepper  -->
+        <ol class="flex items-center w-full mb-6">
+            @for (step of steps; track $index) {
+            <li class="flex items-center w-full relative">
+
+                @if ($index !== 0) {
+                <div class="flex-auto h-1 border-b-4 transition-colors duration-300" [class]="{
+               'border-blue-600': currentStep > step,
+               'border-gray-300': currentStep <= step
+             }">
+                </div>
+                }
+
+                <div class="flex items-center justify-center w-10 h-10 lg:w-12 lg:h-12 rounded-full border-2 transition-colors duration-300 z-10"
+                    [class]="{
+             'bg-blue-600 text-white border-blue-600': currentStep > step,
+             'bg-white text-blue-600 border-blue-600': currentStep === step,
+             'bg-gray-200 text-gray-400 border-gray-300': currentStep < step
+           }">
+                    @if(currentStep > step) {
+                    <span>✔</span>
+                    } @else {
+                    <span>{{ step }}</span>
+                    }
+                </div>
+
+                @if ($index !== steps.length - 1) {
+                <div class="flex-auto h-1 border-b-4 transition-colors duration-300" [class]="{
+               'border-blue-600': currentStep > step,
+               'border-gray-300': currentStep <= step
+             }">
+                </div>
+                }
+
+            </li>
+            }
+        </ol>
+
+        <form [formGroup]="AddForm" (ngSubmit)="sendForm(AddForm)"
+            class="max-w-5xl mx-auto p-6 text-black bg-slate-700 rounded-xl shadow-md">
+            @switch (currentStep) {
+            <!-- step1 -->
+            @case (1) {
+            <!-- ReferenceData -->
+            <div class="p-4 bg-gray-50 border rounded shadow-sm">
+                <h2 class="text-lg font-semibold mb-4">Reference Data</h2>
+                <div formArrayName="References">
+                    @for (Reference of References.controls; track $index) {
+                    <div [formGroupName]="$index" class="grid border-b-4 pb-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label for="PersonName" class="block mb-1 font-medium">Person Name</label>
+                            <input formControlName="PersonName" id="PersonName" type="text"
+                                class="w-full border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="CompanyName" class="block mb-1 font-medium">Company Name</label>
+                            <input formControlName="CompanyName" id="CompanyName" type="text"
+                                class="w-full border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="Country" class="block mb-1 font-medium">Country</label>
+                            <input formControlName="Country" id="Country" type="text"
+                                class="w-full border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="Fax" class="block mb-1 font-medium">Fax</label>
+                            <input formControlName="Fax" id="Fax" type="text" class="w-full border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="EmailId" class="block mb-1 font-medium">Email</label>
+                            <input type="email" id="EmailId" formControlName="EmailId"
+                                class="w-full border rounded px-3 py-2" />
+                        </div>
+                    </div>
+                    }
+                    <div class="pt-4">
+                        <button type="button" (click)="addReference()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            + Add Reference
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+            <!-- step2 -->
+            @case (2) {
+            <div class="p-4 border rounded-lg bg-gray-100 mt-6">
+                <h2 class="text-lg font-semibold mb-4">Entity Info</h2>
+                <div formGroupName="entity">
+                    <div class="grid grid-cols-2 gap-6">
+                        <div>
+                            <label for="Remarks" class="block mb-1 font-medium">Remarks</label>
+                            <input formControlName="Remarks" id="Remarks" type="text"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="EmpId" class="block mb-1 font-medium">Emp ID</label>
+                            <select formControlName="EmpId" id="EmpId" class="w-full border rounded px-3">
+                                <option value="">-- Select Employee --</option>
+                                @for (emp of FillEmployee; track emp.Code) {
+                                <option [value]="emp.Value">
+                                    {{ emp.Text }} {{ emp.Email }}
+                                </option>
+                                }
+                            </select>
+                        </div>
+                        <!-- Passport Info -->
+                        <div>
+                            <label for="PassPortIssueDate" class="block mb-1 font-medium">Passport Issue Date</label>
+                            <input formControlName="PassPortIssueDate" id="PassPortIssueDate" type="date"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="IDExPiryDate" class="block mb-1 font-medium">ID Expiry Date</label>
+                            <input formControlName="IDExPiryDate" id="IDExPiryDate" type="date"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="SeamanBookNO" class="block mb-1 font-medium">Seaman Book No</label>
+                            <input type="text" id="SeamanBookNO" formControlName="SeamanBookNO"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="SeamanIssueDate" class="block mb-1 font-medium">Seaman Issue Date</label>
+                            <input type="date" id="SeamanIssueDate" formControlName="SeamanIssueDate"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="SeamanExpiryDate" class="block mb-1 font-medium">Seaman Expiry Date</label>
+                            <input type="date" id="SeamanExpiryDate" formArrayName="SeamanExpiryDate"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+
+                        <!-- Visa Info -->
+                        <div>
+                            <label for="EmpId" class="block mb-1 font-medium">Visa Sponsor Id</label>
+                            <select formControlName="EmpId" id="EmpId" class="w-full border rounded px-3">
+                                <option value="">-- Select Employee --</option>
+                                @for (visa of FillVendor; track visa.Code) {
+                                <option [value]="visa.Value">
+                                    {{ visa.Text }} {{ visa.Code }}
+                                </option>
+                                }
+                            </select>
+                        </div>
+                        <div>
+                            <label for="VisaIssueDate" class="block mb-1 font-medium">Visa Issue Date</label>
+                            <input type="date" id="VisaIssueDate" formControlName="VisaIssueDate"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="VisaExpiryDate" class="block mb-1 font-medium">Visa Expiry Date</label>
+                            <input type="date" id="VisaExpiryDate" formControlName="VisaExpiryDate"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="VisaUAEIdNO" class="block mb-1 font-medium">Visa UAE ID No</label>
+                            <input type="text" id="VisaUAEIdNO" formControlName="VisaUAEIdNO"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+
+                        <!-- Personal Info -->
+                        <div>
+                            <label for="NameOfSpouse" class="block mb-1 font-medium">Name of Spouse</label>
+                            <input type="text" id="NameOfSpouse" formControlName="NameOfSpouse"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="NoOfChildren" class="block mb-1 font-medium">No. of Children</label>
+                            <input type="number" id="NoOfChildren" formControlName="NoOfChildren"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="Height" class="block mb-1 font-medium">Height (cm)</label>
+                            <input type="number" id="Height" formControlName="Height"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="BodyWeight" class="block mb-1 font-medium">Weight (kg)</label>
+                            <input type="number" formControlName="BodyWeight" id="BodyWeight"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div>
+                            <label for="ResidenceNumber" class="block mb-1 font-medium">Residence Number</label>
+                            <input type="text" id="ResidenceNumber" formControlName="ResidenceNumber"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="SkypeID" class="block mb-1 font-medium">Skype ID</label>
+                            <input type="text" formControlName="SkypeID" id="SkypeID"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div class="col-span-2">
+                            <label for="PermanentAddressHomeCountry" class="block mb-1 font-medium">Permanent Address
+                                (Home
+                                Country)</label>
+                            <input id="PermanentAddressHomeCountry" type="text"
+                                formControlName="PermanentAddressHomeCountry"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="ContactNumberHomeCountry" class="block mb-1 font-medium">Contact Number
+                                (Home)</label>
+                            <input type="text" id="ContactNumberHomeCountry" formControlName="ContactNumberHomeCountry"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="ContactNameAndNumberDuringEmergenciesUAE"
+                                class="block mb-1 font-medium">Emergency
+                                Contact (UAE)</label>
+                            <input type="text" formControlName="ContactNameAndNumberDuringEmergenciesUAE"
+                                id="ContactNameAndNumberDuringEmergenciesUAE"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="ContactNameAndNumberDuringEmergenciesHome"
+                                class="block mb-1 font-medium">Emergency
+                                Contact (Home)</label>
+                            <input type="text" id="ContactNameAndNumberDuringEmergenciesHome"
+                                formControlName="ContactNameAndNumberDuringEmergenciesHome"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+
+                        <!-- Cicpa -->
+                        <div>
+                            <label for="CicpaNO" class="block mb-1 font-medium">CICPA No</label>
+                            <input type="text" id="CicpaNO" formControlName="CicpaNO"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="CicpaIssueDate" class="block mb-1 font-medium">CICPA Issue Date</label>
+                            <input type="date" id="CicpaIssueDate" formControlName="CicpaIssueDate"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+                        <div>
+                            <label for="CicpaExpiryDate" class="block mb-1 font-medium">CICPA Expiry Date</label>
+                            <input type="date" formControlName="CicpaExpiryDate" id="CicpaExpiryDate"
+                                class="w-full input input-bordered border rounded px-3 py-2" />
+                        </div>
+
+                        <!-- Health & Declaration -->
+                        <div class="col-span-2">
+                            <label for="Declaration" class="block mb-1 font-medium">Declaration</label>
+                            <textarea formControlName="Declaration" id="Declaration"
+                                class="w-full border rounded px-3 py-2"></textarea>
+                        </div>
+
+                        <!-- boolean with comment -->
+                        <div class="flex-col items-center mb-4">
+                            <div class="mb-4">
+                                <input id="SignedOffFromAShipDueToMedicalReason"
+                                    formControlName="SignedOffFromAShipDueToMedicalReason" type="checkbox" value=""
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="SignedOffFromAShipDueToMedicalReason"
+                                    class="ms-2 font-medium text-gray-900 dark:text-gray-300">Signed off due to
+                                    medical reason</label>
+                            </div>
+                            @if(AddForm.get('SignedOffFromAShipDueToMedicalReason')?.value){
+                            <input type="text" formControlName="SignedOffFromAShipDueToMedicalReasonComment"
+                                placeholder="Comment" class="w-full border rounded px-3 py-2" />
+                            }
+                        </div>
+                        <div class="flex-col items-center mb-4">
+                            <div class="mb-4">
+                                <input id="UndergoneAnyMdicalOperation" formControlName="UndergoneAnyMdicalOperation"
+                                    type="checkbox" value=""
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="UndergoneAnyMdicalOperation"
+                                    class="ms-2 font-medium text-gray-900 dark:text-gray-300">
+                                    Undergone Any Medical Operation</label>
+                            </div>
+                            @if(AddForm.get('UndergoneAnyMdicalOperation')?.value){
+                            <input type="text" formControlName="UndergoneAnyMdicalOperationComment"
+                                placeholder="Comment" class="w-full border rounded px-3 py-2" />
+                            }
+                        </div>
+                        <div class="flex-col items-center mb-4">
+                            <div class="mb-4">
+                                <input id="DoctorConsultation" formControlName="DoctorConsultation" type="checkbox"
+                                    value=""
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="DoctorConsultation"
+                                    class="ms-2 font-medium text-gray-900 dark:text-gray-300">
+                                    Doctor Consultation</label>
+                            </div>
+                            @if(AddForm.get('DoctorConsultation')?.value){
+                            <input type="text" formControlName="DoctorConsultationComment" placeholder="Comment"
+                                class="w-full border rounded px-3 py-2" />
+                            }
+                        </div>
+                        <div class="flex-col items-center mb-4">
+                            <div class="mb-4">
+                                <input id="HealthOrDisabilityProblem" formControlName="HealthOrDisabilityProblem"
+                                    type="checkbox" value=""
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="HealthOrDisabilityProblem"
+                                    class="ms-2 font-medium text-gray-900 dark:text-gray-300">
+                                    Health Or Disability Problem</label>
+                            </div>
+                            @if(AddForm.get('HealthOrDisabilityProblem')?.value){
+                            <input type="text" formControlName="HealthOrDisabilityProblemComment" placeholder="Comment"
+                                class="w-full border rounded px-3 py-2" />
+                            }
+                        </div>
+                        <div class="flex-col items-center mb-4">
+                            <div class="mb-4">
+                                <input id="InquiryOrInvolvedMaritimeAccident"
+                                    formControlName="InquiryOrInvolvedMaritimeAccident" type="checkbox" value=""
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="InquiryOrInvolvedMaritimeAccident"
+                                    class="ms-2 font-medium text-gray-900 dark:text-gray-300">
+                                    Inquiry Or Involved Maritime Accident</label>
+                            </div>
+                            @if(AddForm.get('InquiryOrInvolvedMaritimeAccident')?.value){
+                            <input type="text" formControlName="InquiryOrInvolvedMaritimeAccidentComment"
+                                placeholder="Comment" class="w-full border rounded px-3 py-2" />
+                            }
+                        </div>
+                        <div class="flex-col items-center mb-4">
+                            <div class="mb-4">
+                                <input id="LicenseSuspendedOrRevoked" formControlName="LicenseSuspendedOrRevoked"
+                                    type="checkbox" value=""
+                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded-sm focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                <label for="LicenseSuspendedOrRevoked"
+                                    class="ms-2 font-medium text-gray-900 dark:text-gray-300">
+                                    License Suspended Or Revoked</label>
+                            </div>
+                            @if(AddForm.get('LicenseSuspendedOrRevoked')?.value){
+                            <input type="text" formControlName="LicenseSuspendedOrRevokedComment" placeholder="Comment"
+                                class="w-full border rounded px-3 py-2" />
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            }
+            @case (3) {
+            <!-- step3 -->
+            <div class="p-4 bg-gray-50 border rounded shadow-sm">
+                <h2 class="text-lg font-semibold mb-4">Qualifications Info</h2>
+                <div formArrayName="Qualifications">
+                    @for (qualification of qualifications.controls; track $index) {
+                    <div [formGroupName]="$index" class="grid border-b-4 pb-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block mb-1 font-medium">Degree or Course</label>
+                            <input formControlName="DegreeOrCourse" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Course Issue Date</label>
+                            <input formControlName="CourseIssueDate" type="date"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Expiry Date</label>
+                            <input formControlName="ExpiryDate" type="date" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Major or Subject</label>
+                            <input formControlName="MajorOrSubject" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">University</label>
+                            <input formControlName="University" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Country</label>
+                            <input formControlName="Country" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Type</label>
+                            <input formControlName="Type" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                    </div>
+                    }
+
+                    <div class="pt-4">
+                        <button type="button" (click)="addQualification()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            + Add Qualification
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+            @case (4) {
+            <!-- step4 -->
+            <div class="p-4 bg-gray-50 border rounded shadow-sm">
+                <h2 class="text-lg font-semibold mb-4">Certificates Info</h2>
+                <div formArrayName="Certificates">
+                    @for (Certificate of Certificates.controls; track $index) {
+                    <div [formGroupName]="$index" class="grid border-b-4 pb-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label class="block mb-1 font-medium">Capacity</label>
+                            <input formControlName="Capacity" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Regulation</label>
+                            <input formControlName="Regulation" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Issue Date</label>
+                            <input formControlName="IssueDate" type="date" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Expiry Date</label>
+                            <input formControlName="ExpiryDate" type="date" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Issuing Authority</label>
+                            <input formControlName="IssuingAuthority" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Limitations</label>
+                            <input formControlName="Limitations" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Country</label>
+                            <input formControlName="Country" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label class="block mb-1 font-medium">Type</label>
+                            <input formControlName="Type" type="number" class="w-full border rounded px-3 py-2">
+                        </div>
+                    </div>
+                    }
+
+                    <div class="pt-4">
+                        <button type="button" (click)="addCertificate()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            + Add Certificates
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+            @case (5) {
+            <!-- step5 -->
+            <div class="p-4 bg-gray-50 border rounded shadow-sm">
+                <h2 class="text-lg font-semibold mb-4">Work Experience</h2>
+                <div formArrayName="WorkExperiences">
+                    @for (Work of WorkExperiences.controls; track $index) {
+                    <div [formGroupName]="$index" class="grid border-b-4 pb-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label for="Capacity" class="block mb-1 font-medium">Vessel Name</label>
+                            <input id="VesselName" formControlName="VesselName" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="VesselType" class="block mb-1 font-medium">Vessel Type</label>
+                            <input id="VesselType" formControlName="VesselType" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label form="Rank" class="block mb-1 font-medium">Rank</label>
+                            <input id="Rank" formControlName="Rank" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="From" class="block mb-1 font-medium">From</label>
+                            <input id="From" formControlName="From" type="date" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="To" class="block mb-1 font-medium">To</label>
+                            <input id="To" formControlName="To" type="date" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="GRT" class="block mb-1 font-medium">GRT</label>
+                            <input id="GRT" formControlName="GRT" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="BHP" class="block mb-1 font-medium">BHP</label>
+                            <input id="BHP" formControlName="BHP" type="text" class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="CompanyName" class="block mb-1 font-medium">Company Name</label>
+                            <input id="CompanyName" formControlName="CompanyName" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                    </div>
+                    }
+
+                    <div class="pt-4">
+                        <button type="button" (click)="addWorkExperience()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            + Add Work Experience
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }
+            @case (6) {
+            <!-- step6 -->
+            <div class="p-4 bg-gray-50 border rounded shadow-sm">
+                <h2 class="text-lg font-semibold mb-4">Language</h2>
+                <div formArrayName="Languages">
+                    @for (lang of Languages.controls; track $index) {
+                    <div [formGroupName]="$index" class="grid border-b-4 pb-6 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+                        <div>
+                            <label for="Capacity" class="block mb-1 font-medium">Capacity</label>
+                            <input id="Capacity" formControlName="Capacity" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="Regulation" class="block mb-1 font-medium">Regulation</label>
+                            <input id="Regulation" formControlName="Regulation" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label form="Limitations" class="block mb-1 font-medium">Limitations</label>
+                            <input id="Limitations" formControlName="Limitations" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="IssueDate" class="block mb-1 font-medium">Issue Date</label>
+                            <input id="IssueDate" formControlName="IssueDate" type="date"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="ExpiryDate" class="block mb-1 font-medium">Expiry Date</label>
+                            <input id="ExpiryDate" formControlName="ExpiryDate" type="date"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="IssuingAuthority" class="block mb-1 font-medium">Issuing Authority</label>
+                            <input id="IssuingAuthority" formControlName="IssuingAuthority" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                        <div>
+                            <label for="Country" class="block mb-1 font-medium">Country</label>
+                            <input id="Country" formControlName="Country" type="text"
+                                class="w-full border rounded px-3 py-2">
+                        </div>
+                    </div>
+                    }
+
+                    <div class="pt-4">
+                        <button type="button" (click)="addLanguage()"
+                            class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">
+                            + Add Language
+                        </button>
+                    </div>
+                </div>
+            </div>
+            }@default {
+            <div class="text-center pb-4">
+                <img src="send.png" class= "mx-auto mb-3 w-40" alt="">
+                <h1 class="text-white text-2xl">All data has been completed. Please proceed by clicking Submit</h1>
+            </div>
+            }
+            }
+            <!-- Submit Buttons -->
+            <div class="col-span-2 text-end mt-4">
+                @if (currentStep > 6) {
+                <button type="submit" class="px-6 me-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    {{ userId ? 'Update' : 'Submit' }}
+                </button>
+
+                <button type="button" routerLink="/dashboard/seafarerList"
+                    class="px-6 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                    Cancel
+                </button>
+                } @else {
+                <button type="button" (click)="setStep(currentStep + 1)"
+                    class="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                    Next
+                </button>
+                }
+            </div>
+        </form>
+
+    </div>
+</section>
