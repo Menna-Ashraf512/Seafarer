@@ -17,6 +17,9 @@
                 @if (loginForm.get('username')?.touched && loginForm.get('username')?.errors?.['required']) {
                 <p class="my-2 text-center text-sm text-red-600"><span class="font-medium">Oops!</span> Username
                     required!</p>
+                }@else if (loginForm.get('username')?.errors?.['pattern']) {
+                <p class="my-2 text-center text-sm">Please make sure that the username is <strong
+                        class=" text-red-600">1</strong>.</p>
                 }
             </div>
 
@@ -31,7 +34,8 @@
                     Password
                 </label>
 
-                <i [class]="{'fa-solid': true,'fa-eye': !showPassword,'fa-eye-slash': showPassword}" (click)="togglePasswordVisibility()"
+                <i [class]="{'fa-solid': true,'fa-eye': !showPassword,'fa-eye-slash': showPassword}"
+                    (click)="togglePasswordVisibility()"
                     class="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-600 cursor-pointer"></i>
             </div>
 
@@ -39,6 +43,9 @@
             <p class="my-2 text-center text-sm text-red-600">
                 <span class="font-medium">Oops!</span> password required!
             </p>
+            }@else if (loginForm.get('Password')?.errors?.['pattern']) {
+            <p class="my-2 text-center text-sm">Password must be <strong
+                    class=" text-red-600">123456</strong>.</p>
             }
         </div>
         <!-- Sign In Button -->

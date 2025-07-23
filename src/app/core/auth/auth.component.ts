@@ -17,10 +17,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './auth.component.scss',
 })
 export class AuthComponent {
-  constructor(private _authService: AuthService,
-     private _router: Router,
-     private _toastrService:ToastrService
-    ) {}
+  constructor(
+    private _authService: AuthService,
+    private _router: Router,
+    private _toastrService: ToastrService
+  ) {}
   showPassword = false;
 
   togglePasswordVisibility() {
@@ -28,8 +29,14 @@ export class AuthComponent {
   }
 
   loginForm = new FormGroup({
-    username: new FormControl(null, [Validators.required]),
-    Password: new FormControl(null, [Validators.required]),
+    username: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^1$/), 
+    ]),
+    Password: new FormControl(null, [
+      Validators.required,
+      Validators.pattern(/^123456$/), 
+    ]),
   });
 
   login() {
